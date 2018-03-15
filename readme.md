@@ -25,13 +25,13 @@ The *go.ps1* script will build and run a docker container using the included *do
 
 The image which is created uses a combination of `GoLang` and `Make` to execute the commands required to build and test the provider.
 
-```powershell
+```PowerShell
  #Run container and create shell for user input
 .\go.ps1 -provider 'terraform-provider-azurerm'
 
 #Run the unit tests
-.go.ps1 -provider 'terraform-provider-azurerm' -mode 'test'
+.\go.ps1 -provider 'terraform-provider-azurerm' -mode 'test'
 
 #Run the acceptance tests
-./go.ps1 -provider 'terraform-provider-azurerm' -mode 'testacc'
+.\go.ps1 -provider 'terraform-provider-azurerm' -mode 'testacc'
 ```
