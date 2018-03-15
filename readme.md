@@ -1,15 +1,17 @@
 # Terraform Provider Development
 
-Develop, run and test terraform providers using with windows. 
+Use this project to help develop, run and test terraform providers using windows with the help of docker. 
+
+Terraform is built using GoLang. This can be installed for windows but issues arise when contributing to existing terraform providers, especially with path lengths being too long.
 
 General Requirements
 ------------
 -	[Docker](https://docs.docker.com/install/)
 
 # Setup
-Clone your required terraform provider module into the *providers* folder. e.g. [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm)
+Clone your required terraform provider module into a folder called `providers` in the root of this project. e.g. [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm)
 
-You can import multiple providers to test & develop side by side if required
+You can import multiple providers to test & develop side by side if required.
 
 ```
 terraform-provider-development
