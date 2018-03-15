@@ -2,8 +2,6 @@
 
 Use this project to help develop, run and test terraform providers using windows with the help of docker. 
 
-Terraform is built using GoLang. This can be installed for windows but issues arise when contributing to existing terraform providers, especially with path lengths being too long.
-
 General Requirements
 ------------
 -	[Docker](https://docs.docker.com/install/)
