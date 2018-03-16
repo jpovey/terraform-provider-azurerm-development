@@ -1,23 +1,20 @@
 # Terraform Provider Development
 
-Use this project to help develop, run and test terraform providers using windows with the help of docker. 
+Use this project to help develop, run and test the azure terraform provider using windows with the help of docker. 
 
 General Requirements
 ------------
 -	[Docker](https://docs.docker.com/install/)
 
 # Setup
-Clone your required terraform provider module into a folder called `providers` in the root of this project. e.g. [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm)
-
-You can import multiple providers to test & develop side by side if required.
+Clone the [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm) repository into the `provider` folder in the root of this project.
 
 ```
 terraform-provider-development
 ├── go.ps1
 ├── dockerfile
-├── providers
+├── provider
 │   ├── terraform-provider-azurerm
-│   ├── terraform-provider-aws
 ```
 
 # Run
@@ -25,13 +22,15 @@ The *go.ps1* script will build and run a docker container using the included *do
 
 The image which is created uses a combination of `GoLang` and `Make` to execute the commands required to build and test the provider.
 
+To run acceptance tests you will need to set your azure subscription credentials in *env.list*
+
 ```PowerShell
  #Run container and create shell for user input
-.\go.ps1 -provider 'terraform-provider-azurerm'
+.\go.ps1
 
 #Run the unit tests
-.\go.ps1 -provider 'terraform-provider-azurerm' -mode 'test'
+.\go.ps1 -mode 'test'
 
 #Run the acceptance tests
-.\go.ps1 -provider 'terraform-provider-azurerm' -mode 'testacc'
+.\go.ps1 -mode 'testacc'
 ```

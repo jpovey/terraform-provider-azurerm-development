@@ -1,25 +1,33 @@
-#Run following commands
-#1. Create an image to create terraform dev environent: docker build ./ -t go-terraform-azurerm --no-cache
-#2. Run the image: docker run -it -p 8080:8080 go-terraform-azurerm
-#3. Run tests: docker run -it -e MODE='testacc' go-terraform-azurerm
-
 #Convert files to unix line endings
 FROM perl as builder
 ARG provider
-COPY ./providers/${provider} /providers/${provider}
-WORKDIR /providers/${provider}
+COPY ./provider/${provider} /provider/${provider}
+WORKDIR /provider/${provider}
 RUN find $directory -type f -name "*.sh"  | xargs perl -pi -e 's/\r\n/\n/g'
 
+#Build terraform provider
 FROM golang
 ARG provider
-ENV mode $mode
-COPY --from=builder /providers/${provider} /go/src/github.com/terraform-providers/${provider}
+ENV mode $mode \
+	subscriptionId $subscriptionId \
+	clientId $clientId \
+	clientSecret $clientSecret \
+	tenantId $tenantId \
+	location $location \
+	locationAlt $locationAlt
+COPY --from=builder /provider/${provider} /go/src/github.com/terraform-providers/${provider}
 WORKDIR /go/src/github.com/terraform-providers/${provider}
 RUN make fmt
 RUN make build
-CMD if [ ${mode} = 'test' ]; then make test; \
-    elif [ ${mode} = 'testacc' ]; then make testacc; \
-	else  bash; \
+CMD export ARM_SUBSCRIPTION_ID="${subscriptionId}"; \
+	export ARM_CLIENT_ID="${clientId}"; \
+	export ARM_CLIENT_SECRET="${clientSecret}"; \
+	export ARM_TENANT_ID="${tenantId}"; \
+	export ARM_TEST_LOCATION="${location}"; \
+	export ARM_TEST_LOCATION_ALT="${locationAlt}"; \
+	if [ ${mode} = 'test' ]; then make test; \
+    	elif [ ${mode} = 'testacc' ]; then make testacc; \
+		else bash; \
 	fi
 #EXPOSE 8080
 
