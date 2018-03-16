@@ -7,22 +7,23 @@ General Requirements
 -	[Docker](https://docs.docker.com/install/)
 
 # Setup
-Clone the [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm) repository into the `provider` folder in the root of this project.
+Clone the [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm) repository into this projects `/src/provider` folder.
 
 ```
 terraform-provider-development
-├── go.ps1
-├── dockerfile
-├── provider
-│   ├── terraform-provider-azurerm
+├── src
+|   ├── go.ps1
+|   ├── dockerfile
+|   ├── provider
+|   |   ├── terraform-provider-azurerm
 ```
 
 # Run
-The *go.ps1* script will build and run a docker container using the included *dockerfile*. 
+The `go.ps1` script will build and run a docker container using the included `dockerfile`. 
 
-The image which is created uses a combination of `GoLang` and `Make` to execute the commands required to build and test the provider.
+The image which is created uses a combination of *GoLang* and *Make* to execute the commands required to build and test the provider.
 
-To run acceptance tests you will need to set your azure subscription credentials in *env.list*
+To run acceptance tests you will need to set your azure subscription credentials in `env.list`.
 
 ```PowerShell
  #Run container and create shell for user input
