@@ -35,6 +35,12 @@ To run acceptance tests you will need to set your azure subscription credentials
 #Run the unit tests
 .\go.ps1 -mode 'test'
 
+#Run specific unit tests
+.\go.ps1 -mode 'test' -testPrefix 'TestAzureFind'
+
 #Run the acceptance tests
 .\go.ps1 -mode 'testacc'
+
+#Run specific acceptance tests
+.\go.ps1 -mode 'testacc' -testPrefix 'TestAccAzureRM'
 ```

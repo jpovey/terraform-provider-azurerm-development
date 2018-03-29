@@ -9,6 +9,7 @@ RUN find $directory -type f -name "*.sh"  | xargs perl -pi -e 's/\r\n/\n/g'
 FROM golang
 ARG provider
 ENV mode $mode \
+	testPrefix $testPrefix \
 	subscriptionId $subscriptionId \
 	clientId $clientId \
 	clientSecret $clientSecret \
@@ -25,8 +26,7 @@ CMD export ARM_SUBSCRIPTION_ID=${subscriptionId}; \
 	export ARM_TENANT_ID=${tenantId}; \
 	export ARM_TEST_LOCATION=${location}; \
 	export ARM_TEST_LOCATION_ALT=${locationAlt}; \
-	if [ ${mode} = 'test' ]; then make test; \
-    	elif [ ${mode} = 'testacc' ]; then make testacc; \
+	if [ ${mode} = 'test' ]; then make test TESTARGS='-run=${testPrefix}'; \
+    	elif [ ${mode} = 'testacc' ]; then make testacc TESTARGS='-run=${testPrefix}'; \
 		else bash; \
 	fi
-#EXPOSE 8080
