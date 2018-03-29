@@ -22,25 +22,44 @@ terraform-provider-azurerm-development
 Set your azure service principle credentials in `env.list`. These are used to run acceptance tests, _these will create real resources and cost real money_.
 
 # Run
-The `go.ps1` script will build and run a docker container using the included `dockerfile`. 
+The `go.ps1` script will build and run a docker container using the included `dockerfile`. By default a shell will be created for user input.
 
-The image which is created uses a combination of *GoLang* and *Make* to execute the commands required to build and test the provider.
+The image which is created uses a combination of *GoLang* and *Make* to execute the commands required to build the provider.
+
+```PowerShell
+.\go.ps1
+```
+
+# Automated Testing
+Unit and acceptance tests can be run using the same `go.ps1` script.
 
 To run acceptance tests you will need to set your azure subscription credentials in `env.list`.
 
 ```PowerShell
- #Run container and create shell for user input
-.\go.ps1
-
-#Run the unit tests
 .\go.ps1 -mode 'test'
 
-#Run specific unit tests
+.\go.ps1 -mode 'testacc'
+```
+
+Use the `testPrefix` parameter to target a specific set of tests
+
+```PowerShell
 .\go.ps1 -mode 'test' -testPrefix 'TestAzureFind'
 
-#Run the acceptance tests
-.\go.ps1 -mode 'testacc'
-
-#Run specific acceptance tests
 .\go.ps1 -mode 'testacc' -testPrefix 'TestAccAzureRM'
+```
+
+# Manual Testing
+To test the provider manually run the `go.ps1` script to build the image and open a command line.
+
+When the image is created any `*.tf` files will be copied from the src folder into the provider directory in the container. Create files with a .tf extension to configure create terraform resources.
+
+From here use the normal terraform commands to test the provider. The azure subscription credentials set in `env.list` will be used to connect and login to azure.
+
+```PowerShell
+terraform init
+
+terraform plan
+
+terraform apply
 ```

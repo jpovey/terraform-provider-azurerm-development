@@ -1,0 +1,2 @@
+# Keep this directory to clone terraform provider
+*.tf

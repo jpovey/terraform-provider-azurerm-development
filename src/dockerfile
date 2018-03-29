@@ -7,7 +7,7 @@ RUN find $directory -type f -name "*.sh"  | xargs perl -pi -e 's/\r\n/\n/g'
 
 #create container with terraform installed
 FROM golang:alpine as terraformBase
-ENV TERRAFORM_VERSION=0.10.0
+ENV TERRAFORM_VERSION=0.11.5
 RUN apk add --update git bash openssh make
 ENV TF_DEV=true
 ENV TF_RELEASE=true
@@ -29,6 +29,7 @@ ENV mode $mode \
 	location $location \
 	locationAlt $locationAlt
 COPY --from=builder /provider/${provider} /go/src/github.com/terraform-providers/${provider}
+COPY *.tf /go/src/github.com/terraform-providers/${provider}/
 WORKDIR /go/src/github.com/terraform-providers/${provider}
 RUN make fmt
 RUN make build
