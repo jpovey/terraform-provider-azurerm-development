@@ -5,8 +5,20 @@ COPY ./provider/${provider} /provider/${provider}
 WORKDIR /provider/${provider}
 RUN find $directory -type f -name "*.sh"  | xargs perl -pi -e 's/\r\n/\n/g'
 
-#Build terraform provider
-FROM golang
+#create container with terraform installed
+FROM golang:alpine as terraformBase
+ENV TERRAFORM_VERSION=0.10.0
+RUN apk add --update git bash openssh make
+ENV TF_DEV=true
+ENV TF_RELEASE=true
+WORKDIR $GOPATH/src/github.com/hashicorp/terraform
+RUN git clone https://github.com/hashicorp/terraform.git ./ && \
+    git checkout v${TERRAFORM_VERSION} && \
+    /bin/bash scripts/build.sh
+WORKDIR $GOPATH
+
+#Build terraform provider dev environment
+FROM terraformBase
 ARG provider
 ENV mode $mode \
 	testPrefix $testPrefix \
