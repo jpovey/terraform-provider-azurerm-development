@@ -10,13 +10,16 @@ General Requirements
 Clone the [terraform-provider-azurerm](https://github.com/terraform-providers/terraform-provider-azurerm) repository into this projects `/src/provider` folder.
 
 ```
-terraform-provider-development
+terraform-provider-azurerm-development
 ├── src
 |   ├── go.ps1
+|   ├── env.list
 |   ├── dockerfile
 |   ├── provider
 |   |   ├── terraform-provider-azurerm
 ```
+
+Set your azure service principle credentials in `env.list`. These are used to run acceptance tests, _these will create real resources and cost real money_.
 
 # Run
 The `go.ps1` script will build and run a docker container using the included `dockerfile`. 
