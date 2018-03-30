@@ -52,9 +52,9 @@ Use the `testPrefix` parameter to target a specific set of tests
 # Manual Testing
 To test the provider manually run the `go.ps1` script to build the image and open a command line.
 
-When the image is created any `*.tf` files will be copied from the src folder into the provider directory in the container. Create files with a .tf extension to configure create terraform resources.
+When the image is created any `*.tf` files will be copied from the src folder into the provider directory in the container. Create files with a .tf extension to configure terraform resources for testing.
 
-From here use the normal terraform commands to test the provider. The azure subscription credentials set in `env.list` will be used to connect and login to azure.
+From here use the normal terraform commands to test the provider. The azure subscription credentials set in `env.list` will be used to connect and login to azure and could cost money.
 
 ```PowerShell
 terraform init
