@@ -5,7 +5,7 @@ COPY ./provider/${provider} /provider/${provider}
 WORKDIR /provider/${provider}
 RUN find $directory -type f -name "*.sh"  | xargs perl -pi -e 's/\r\n/\n/g'
 
-#create container with terraform installed
+#Create container with terraform installed
 FROM golang:alpine as terraformBase
 ENV TERRAFORM_VERSION=0.11.5
 RUN apk add --update git bash openssh make
