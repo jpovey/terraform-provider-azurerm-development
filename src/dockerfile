@@ -17,8 +17,16 @@ RUN git clone https://github.com/hashicorp/terraform.git ./ && \
     /bin/bash scripts/build.sh
 WORKDIR $GOPATH
 
-#Build terraform provider dev environment
-FROM terraformBase
+#Build terraform provider
+FROM terraformBase as devBase
+ARG provider
+COPY --from=builder /provider/${provider} /go/src/github.com/terraform-providers/${provider}
+WORKDIR /go/src/github.com/terraform-providers/${provider}
+RUN make fmt
+RUN make build
+
+#Run build provider and run commands
+FROM devBase
 ARG provider
 ENV mode $mode \
 	testPrefix $testPrefix \
@@ -28,11 +36,8 @@ ENV mode $mode \
 	tenantId $tenantId \
 	location $location \
 	locationAlt $locationAlt
-COPY --from=builder /provider/${provider} /go/src/github.com/terraform-providers/${provider}
 COPY *.tf /go/src/github.com/terraform-providers/${provider}/
 WORKDIR /go/src/github.com/terraform-providers/${provider}
-RUN make fmt
-RUN make build
 CMD export ARM_SUBSCRIPTION_ID=${subscriptionId}; \
 	export ARM_CLIENT_ID=${clientId}; \
 	export ARM_CLIENT_SECRET=${clientSecret}; \
@@ -43,3 +48,6 @@ CMD export ARM_SUBSCRIPTION_ID=${subscriptionId}; \
     	elif [ ${mode} = 'testacc' ]; then make testacc TESTARGS='-run=${testPrefix}'; \
 		else bash; \
 	fi
+
+#to make building quicker use above as a builder and copy in *.tf in seperate image
+#this would prevent the terraform provider from being rebuilt everytime
